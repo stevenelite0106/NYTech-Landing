@@ -1,0 +1,735 @@
+/* =========================================================
+   Space of Mind — Founding 100 landing page
+   Pixel-faithful reconstruction of figma.css
+   (SoM - Wireframe - App Image Style · 1440 × 7778)
+   Every frame is placed at its exact Figma left/top, with
+   the exact width/height, colors, and typography.
+   ========================================================= */
+
+:root {
+  /* ---- Color tokens (verbatim from figma.css) ---- */
+  --bg:          #FFFEF9;
+  --blue-700:    #1F2835;
+  --ink:         #2C394A; /* primary dark */
+  --blue-400:    #56616E;
+  --blue-300:    #727A86;
+  --blue-200:    #9EA4AC;
+  --blue-100:    #BEC2C7;
+  --blue-50:     #EAEBED;
+  --hero-fb:     #E1E6ED;
+  --white:       #FFFFFD;
+  --pure-white:  #FFFFFF;
+  --offwhite:    #FFFEF9;
+  --card-label:  #CBDFFF;
+  --accent:      #7A7AD6;
+  --accent-soft: #C1C1FF;
+  --warn:        #EA6024;
+  --link:        #7197C7;
+  --line:        #777F94;
+
+  /* ---- Fonts ---- */
+  --display: 'Neue Haas Grotesk Display Pro', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --body:    'Roboto', 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ececec;
+  font-family: var(--display);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* The fixed-size canvas — every child is absolutely positioned. */
+.viewport { overflow-x: hidden; background: #ececec; }
+.stage {
+  position: relative;
+  width: 1440px;
+  height: 7880px;
+  margin: 0 auto;
+  background: var(--offwhite);
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+/* =========================================================
+   HERO — Frame 2147229144  (0,0 · 1440×812)
+   ========================================================= */
+.hero {
+  position: absolute;
+  left: 0; top: 0;
+  width: 1440px; height: 812px;
+  border-radius: 0 0 80px 80px;
+  background:
+    linear-gradient(180deg, rgba(44,57,74,.22), rgba(44,57,74,.05) 42%, rgba(225,230,237,.55)),
+    url('/1.png') center / cover no-repeat,
+    var(--hero-fb);
+  overflow: hidden;
+}
+
+/* logo Vector — right 70.35, top 36.84 · 79.65×84.32 */
+.hero__logo {
+  position: absolute;
+  right: 70.35px; top: 36.84px;
+  width: 79.65px; height: 84.32px;
+  background: url('/mark.svg') center / contain no-repeat;
+}
+
+/* Hero title "Join the Founding 100" — 366×46, centered +30x, vertically centered */
+.hero__title {
+  position: absolute;
+  left: 560px; top: 383px;
+  width: 380px; height: 46px;
+  font-size: 36px; font-weight: 500; line-height: 114%;
+  color: var(--offwhite);
+  display: flex; align-items: center;
+  text-shadow: 0 2px 30px rgba(44,57,74,.35);
+}
+
+/* ---- Hero stat badges ---- */
+.stat { position: absolute; display: flex; flex-direction: column; gap: 15px; }
+.stat__line { height: 2px; }
+.stat__body { display: flex; flex-direction: column; gap: 6px; }
+.stat__value {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 28px; font-weight: 300; line-height: 26px; letter-spacing: -0.5px;
+}
+.stat__label { font-size: 10px; font-weight: 500; line-height: 12px; letter-spacing: -0.01em; }
+
+/* left (492) — 316,513.87 · 185 · white */
+.stat--left { left: 316px; top: 513.87px; width: 185px; align-items: flex-start; color: var(--pure-white); }
+.stat--left .stat__line {
+  width: 185px;
+  background: linear-gradient(90deg, #FFFFFF 0 33%, rgba(255,255,255,.4) 33% 100%);
+}
+
+/* right badges (76% / 82%) — dark ink */
+.stat--right { align-items: flex-end; color: var(--ink); }
+.stat--right .stat__body { align-items: flex-end; }
+.stat--right .stat__label { text-align: right; }
+.stat--right .stat__line {
+  background: linear-gradient(270deg, var(--ink) 0 33%, rgba(44,57,74,.4) 33% 100%);
+}
+
+/* 76% — Frame 2147228560 (1141,488 · 194) */
+.stat--right:not(.stat--top) { left: 1141px; top: 488px; width: 194px; }
+.stat--right:not(.stat--top) .stat__line { width: 194px; }
+
+/* 82% — Frame 2147228564 (1151,215 · 209) */
+.stat--top { left: 1151px; top: 215px; width: 209px; }
+.stat--top .stat__line { width: 209px; }
+
+/* stat icons */
+.ic--dot { width: 14.89px; height: 14.89px; border: 2px solid var(--ink); border-top-color: transparent; border-radius: 50%; transform: rotate(45deg); }
+.ic--mark {
+  width: 19.13px; height: 20.25px;
+  background: var(--ink);
+  -webkit-mask: url('/mark.svg') center / contain no-repeat;
+  mask: url('/mark.svg') center / contain no-repeat;
+}
+
+/* =========================================================
+   TAGLINE — motto/tagline  (70,1127 · 1300×119)
+   row is vertically centered → top 1140
+   ========================================================= */
+.tagline-h {
+  position: absolute;
+  left: 70px; top: 1140px;
+  width: 680px; height: 92px;
+  font-size: 40px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  display: flex; align-items: center;
+}
+.tagline-p {
+  position: absolute;
+  left: 921px; top: 1140px;
+  width: 449px; height: 92px;
+  font-size: 20px; font-weight: 500; line-height: 114%;
+  color: var(--blue-400);
+  display: flex; align-items: center;
+}
+
+/* =========================================================
+   MODULE 2 — Founding 100 club  (70,1546 · 1300×800)
+   ========================================================= */
+/* glass panel — Frame 2147229193 (offset 485,0 → 555,1546 · 815×668) */
+.club-panel {
+  position: absolute;
+  left: 555px; top: 1546px;
+  width: 815px; height: 668px;
+  background: url('/2.png') center / cover no-repeat;
+    border-radius: 60px;
+    overflow: hidden;
+}
+.club-panel::before {
+  content: "";
+  position: absolute; inset: -40px;
+  filter: blur(42px);
+}
+
+/* benefit stack — Frame 2147229206 (offset 88,23 → 158,1569 · 639×622, col gap 8) */
+.benefits {
+  position: absolute;
+  left: 643px; top: 1569px;
+  width: 639px; height: 622px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.benefit {
+  position: relative;
+  width: 639px; height: 118px;
+  background: rgba(46, 52, 65, 0.55);
+  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(22px);
+  border-radius: 36px;
+  padding: 30px 26px;
+  display: flex; flex-direction: column; justify-content: center; gap: 6px;
+}
+.benefit__title { font-family: var(--body); font-size: 14px; font-weight: 400; line-height: 20px; letter-spacing: 0.25px; color: var(--card-label); }
+.benefit__text  { font-family: var(--body); font-size: 14px; font-weight: 400; line-height: 20px; letter-spacing: 0.25px; color: var(--white); }
+
+/* club intro — Frame 2147229132 (70,1876 col gap 40) */
+.club-title {
+  position: absolute;
+  left: 70px; top: 1876px;
+  width: 391px; height: 46px;
+  font-size: 40px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  display: flex; align-items: center;
+}
+.club-sub {
+  position: absolute;
+  left: 70px; top: 1962px;
+  width: 438px; height: 54px;
+  font-size: 20px; font-weight: 500; line-height: 114%;
+  color: var(--blue-400);
+}
+
+/* =========================================================
+   QUOTE 1  (70,2646 · 1300×40)
+   ========================================================= */
+.quote1 {
+  position: absolute;
+  left: 70px; top: 2646px;
+  width: 1300px; height: 40px;
+  font-size: 40px; font-weight: 500; line-height: 100%;
+  color: rgba(44, 57, 74, 0.4);          /* untyped letters = gray */
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+/* Typewriter overlay: a black copy of the text revealed left→right */
+.quote1__type {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.quote1__type::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 0;                              /* animates 0 → 100% */
+  overflow: hidden;
+  white-space: nowrap;
+  color: #000;                           /* typed letters = black */
+  border-right: 2px solid #000;          /* caret */
+  animation:
+    quote1-typing 4s steps(54) infinite,
+    quote1-caret  0.6s steps(1) infinite;
+}
+@keyframes quote1-typing {
+  0%   { width: 0; }
+  65%  { width: 100%; }
+  85%  { width: 100%; }                  /* hold on full line */
+  100% { width: 0; }                     /* reset → letters fade back to gray */
+}
+@keyframes quote1-caret {
+  50% { border-color: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quote1__type::before { width: 100%; border-right: none; animation: none; }
+}
+
+/* =========================================================
+   90-DAY PROTOCOL — Frame 2147228570  (70,3119 · 1300×707)
+   ========================================================= */
+.protocol-img {
+  position: absolute;
+  left: 70px; top: 3119px;
+  width: 1300px; height: 707px;
+  border-radius: 40px;
+  background:
+    linear-gradient(0deg, rgba(0,0,0,.38), rgba(0,0,0,0) 55%),
+    url('/3.png') center / cover no-repeat,
+    #F6F6F6;
+  overflow: hidden;
+}
+.bubbles {
+  position: absolute;
+  top: 76px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 5px;
+}
+.bubble { width: 9.2px; height: 9.2px; border-radius: 50%; background: var(--blue-300); opacity: .2; }
+.bubble.is-active { opacity: 1; }
+/* caption "90 day transformation protocol" — 363×32, centered -8.5x, top 3950 */
+.protocol-cap {
+  position: absolute;
+  left: 520px; top: 3950px;
+  width: 383px; height: 32px;
+  font-size: 25px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+
+/* =========================================================
+   MODULE 4 — training stack  (0,4282 · 1440×1041)
+   ========================================================= */
+/* header — Frame 2147229139 (70,4338 · 1300×94) */
+.stack-h1 {
+  position: absolute;
+  left: 70px; top: 4338px;
+  width: 593px; height: 46px;
+  font-size: 40px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  display: flex; align-items: center;
+}
+.stack-h2 {
+  position: absolute;
+  left: 70px; top: 4386px;
+  width: 593px; height: 46px;
+  font-size: 34px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  opacity: 0.5;
+  display: flex; align-items: center;
+}
+.stack-p {
+  position: absolute;
+  left: 851px; top: 4363px;
+  width: 518.56px; height: 69px;
+  font-size: 20px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  display: flex; align-items: center;
+}
+
+/* =========================================================
+   CARD SLIDER — replaces the 3 static training-stack cards
+   3 visible at a time: center sharp, sides glow + alpha.
+   ========================================================= */
+.cards {
+  position: absolute;
+  left: 0; top: 4552px;
+  width: 1440px; height: 550px;
+}
+.cards-track {
+  position: absolute; inset: 0;
+  perspective: 1600px;
+}
+
+/* Frame 2147229192 — 500×550, radius 75. Card group (image + pattern card) */
+.tcard {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 500px; height: 550px;
+  margin-left: -250px;
+  border-radius: 75px;
+  background: rgba(255, 254, 249, 0.2);
+  box-shadow: 1px 0 10px rgba(147,129,192,.1), 4px 0 53.856px #F0ECFA;
+  overflow: hidden;
+  transition: transform .55s cubic-bezier(.4,0,.2,1), opacity .55s, filter .55s;
+  transform: scale(.7);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+}
+/* Frame 2147229190 — image 524×720 at (-10,-63), mirrored (matrix(-1,0,0,1,0,0)) */
+.tcard__img {
+  position: absolute;
+  left: -10px; top: -63px;
+  width: 524px; height: 720px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #F0F2FA;     /* linear-gradient(0deg,#F0F2FA,#F0F2FA) fallback */
+  transform: scaleX(-1);         /* matrix(-1,0,0,1,0,0) */
+}
+/* center = sharp, full opacity */
+.tcard.is-center {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  filter: none;
+  z-index: 3;
+  pointer-events: auto;
+}
+/* sides = glow (blur) + alpha */
+.tcard.is-left {
+  transform: translateX(-360px) scale(.82);
+  opacity: .45;
+  filter: blur(5px);
+  z-index: 2;
+}
+.tcard.is-right {
+  transform: translateX(360px) scale(.82);
+  opacity: .45;
+  filter: blur(5px);
+  z-index: 2;
+}
+/* everything else hidden */
+.tcard.is-hidden { opacity: 0; transform: scale(.7); z-index: 1; }
+
+/* nav arrows */
+.cards-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 6;
+  width: 56px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; line-height: 1; color: var(--ink);
+  background: rgba(255,255,255,.7);
+  border: 1px solid rgba(44,57,74,.12);
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: background .2s, transform .2s;
+}
+.cards-nav:hover { background: #fff; }
+.cards-prev { left: 120px; }
+.cards-next { right: 120px; }
+
+/* overlay base — Frame 2147229133 glass card, centered inside each card.
+   Shared by all five groups; each group adds its own inner content. */
+.ov {
+  position: absolute;
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  z-index: 4;
+  width: 374px;
+  padding: 30px 26px;
+  background: rgba(44, 57, 74, 0.55);
+  box-shadow: 1px 0 10px rgba(147,129,192,.16);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-radius: 36px;
+  color: var(--white);
+  display: flex; flex-direction: column;
+}
+
+/* GROUP 1 — pattern card */
+.ov--pattern { gap: 20px; }
+.pc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
+.pc-stat { display: flex; flex-direction: column; gap: 4px; }
+.pc-name { font-size: 20px; font-weight: 500; line-height: 114%; color: var(--white); }
+.pc-score { font-size: 40px; font-weight: 500; line-height: 114%; color: var(--white); }
+.pc-arrow { font-size: 22px; color: var(--white); align-self: center; opacity: .85; }
+
+.trend { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; line-height: 120%; }
+.trend--up { color: var(--accent-soft); }
+.trend--accent { color: var(--accent); }
+.trend--down { color: var(--warn); }
+.tri-up   { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 7px solid currentColor; }
+.tri-down { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 7px solid currentColor; }
+
+/* calendar — Frame 2147229174 (304×123) */
+.calendar { position: relative; width: 304px; height: 123px; align-self: center; }
+.cal-grad {
+  position: absolute; left: calc(50% - 327px/2); top: -0.12px;
+  width: 327px; height: 147px;
+  /* background: linear-gradient(95.41deg, #FBFBFF 1.83%, #DEDCFF 41.51%, #E5F4FF 102.08%); */
+  border-radius: 12px;
+  opacity: .9;
+}
+/* Frame 2147229170 — 304×106, col gap 2 / row gap 2 → 6×17 grid of 16px cells */
+.cal-dots {
+  position: absolute; left: 50%; top: 16px; transform: translateX(-50%);
+  width: 304px; height: 106px;
+  display: grid;
+  grid-template-columns: repeat(17, 16px);
+  grid-template-rows: repeat(6, 16px);
+  gap: 2px;
+}
+.cal-dots span { width: 16px; height: 16px; }            /* blank cell keeps the grid aligned */
+.cal-dots span.on { border-radius: 50%; background: #FBFBFF; }  /* Ellipse 8642 */
+.cal-week {
+  position: absolute; left: 50%; bottom: -15px; transform: translateX(-50%);
+  width: 290.29px; display: flex; justify-content: space-between;
+}
+.cal-week span {
+  width: 14px; font-size: 10px; font-weight: 450; line-height: 120%;
+  text-align: center; text-transform: uppercase; color: var(--white);
+}
+
+/* GROUP 2 — Decision simulator (Frame 2147228624) */
+.ov--decision { gap: 22px; }
+.ov-q { font-size: 26px; font-weight: 500; line-height: 106%; color: var(--pure-white); }
+.ov-opts { display: flex; flex-direction: column; gap: 12px; }
+.ov-opt { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; line-height: 120%; color: var(--pure-white); }
+.ov-dot { width: 15.12px; height: 15.12px; border-radius: 50%; background: var(--white); flex: none; }
+
+/* GROUP 3 — Future-self identity training */
+.ov--identity { gap: 12px; }
+.ov-label { font-size: 16px; font-weight: 500; line-height: 120%; color: var(--white); }
+.ov-big { font-size: 32px; font-weight: 500; line-height: 114%; color: var(--white); margin: 0; }
+.ov-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 10px; border-bottom: 1px solid var(--white);
+  font-size: 12px; font-weight: 500; line-height: 120%; color: var(--white);
+}
+.ov-chev { width: 8px; height: 8px; border-right: 1.5px solid var(--white); border-bottom: 1.5px solid var(--white); transform: rotate(45deg); }
+
+/* GROUP 4 — 90-day transformation protocol (Phase rows) */
+.ov--phases { gap: 16px; }
+.ov-phase {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding: 16px 20px;
+  background: rgba(46, 52, 65, 0.35);
+  border-radius: 26px;
+}
+.ov-phase-txt { display: flex; flex-direction: column; gap: 6px; }
+.ov-phase-title { font-size: 28px; font-weight: 500; line-height: 114%; color: var(--white); }
+.ov-arrow2 { font-size: 24px; color: var(--white); opacity: .85; }
+
+/* GROUP 5 — Rehearse future self responses (pills) */
+.ov--rehearse { gap: 14px; }
+.ov-pill {
+  padding: 20px;
+  background: rgba(46, 52, 65, 0.35);
+  -webkit-backdrop-filter: blur(13px); backdrop-filter: blur(13px);
+  border-radius: 26px;
+  font-size: 28px; font-weight: 500; line-height: 114%; color: var(--pure-white);
+  text-align: center;
+}
+
+/* feature caption */
+.feature-title {
+  position: absolute;
+  left: 471px; top: 5142px;
+  width: 500px; height: 32px;
+  font-size: 28px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+.feature-sub {
+  position: absolute;
+  left: 471px; top: 5190px;
+  width: 500px; height: 38px;
+  font-size: 16px; font-weight: 500; line-height: 120%;
+  color: var(--blue-300);
+  text-align: center;
+}
+
+/* =========================================================
+   QUOTE 2 — Frame 2147229193  (278.5,5623 · 883×97)
+   ========================================================= */
+.quote2 {
+  position: absolute;
+  left: 278.5px; top: 5623px;
+  width: 883px; height: 97px;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  text-align: center;
+}
+/* Typewriter (same technique as quote1) across two lines, typed in sequence */
+.quote2__type {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 40px; font-weight: 500; line-height: 114%;
+  color: rgba(44, 57, 74, 0.4);          /* untyped letters = gray */
+}
+.quote2__type::before {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+  width: 0;                              /* animates 0 → 100% */
+  overflow: hidden;
+  white-space: nowrap;
+  color: #000;                           /* typed letters = black */
+  border-right: 2px solid #000;          /* caret */
+}
+.quote2__a::before {
+  animation: quote2-a 6s steps(54) infinite, quote2-caret 0.6s steps(1) infinite;
+}
+.quote2__b::before {
+  animation: quote2-b 6s steps(35) infinite, quote2-caret 0.6s steps(1) infinite;
+}
+/* line A types first quarter, holds; line B waits, then types */
+@keyframes quote2-a {
+  0%   { width: 0; }
+  25%  { width: 100%; }
+  90%  { width: 100%; }
+  100% { width: 0; }
+}
+@keyframes quote2-b {
+  0%, 35% { width: 0; }
+  60%     { width: 100%; }
+  90%     { width: 100%; }
+  100%    { width: 0; }
+}
+@keyframes quote2-caret { 50% { border-color: transparent; } }
+@media (prefers-reduced-motion: reduce) {
+  .quote2__type::before { width: 100%; border-right: none; animation: none; }
+}
+
+/* =========================================================
+   MODULE 5 — science  (70,5977 · 1300×642)
+   ========================================================= */
+.science {
+  position: absolute;
+  left: 70px; top: 5977px;
+  width: 1300px; height: 642px;
+  border-radius: 60px;
+  background:
+    linear-gradient(187.8deg, rgba(0,0,0,0) 43.03%, rgba(0,0,0,0.45) 85.18%),
+    url('/9.png') center / cover no-repeat,
+    #20242f;
+  overflow: hidden;
+}
+/* content row — Frame 2147229132 (1168×76, centered, lower third) */
+.science__row {
+  position: absolute;
+  left: calc(50% - 1168px/2); top: calc(50% - 76px/2 + 219px);
+  width: 1168px; height: 76px;
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;
+}
+.science__title { width: 414px; font-size: 40px; font-weight: 500; line-height: 114%; color: var(--pure-white); }
+.science__text  { width: 496.85px; font-size: 16px; font-weight: 500; line-height: 120%; color: var(--pure-white); }
+
+/* =========================================================
+   TESTIMONIALS  (top 6731)
+   ========================================================= */
+.tm {
+  position: absolute; top: 6731px;
+  font-size: 20px; font-weight: 500; line-height: 114%;
+  color: var(--ink);
+}
+.tm b { font-weight: 600; }
+.tm--1 { left: 85px;   width: 405px; height: 205px; }
+.tm--2 { left: 553px;  width: 415px; height: 114px; }
+.tm--3 { left: 1002px; width: 369px; height: 114px; }
+
+/* =========================================================
+   FINAL CTA — Frame 2147229144  (top 7047)
+   ========================================================= */
+.cta-glow {
+  position: absolute;
+  left: 631px; top: 7403px;
+  width: 289px; height: 288px;
+  background: url('/purple_mark.svg') center / contain no-repeat;
+  opacity: 1;        /* no fade */
+  filter: none;      /* no glow/blur — sharp mark */
+}
+.cta-title {
+  position: absolute;
+  left: 441px; top: 7047px;
+  width: 589px; height: 60px;
+  font-size: 55px; font-weight: 500; line-height: 100%;
+  color: var(--ink);
+  display: flex; align-items: center;
+}
+.cta-sub {
+  position: absolute;
+  left: 326.5px; top: 7136px;
+  width: 787px; height: 86px;
+  font-size: 28px; font-weight: 500; line-height: 114%;
+  color: var(--blue-400);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+
+.cta-sub-credit {
+  position: absolute;
+  left: 326.5px;
+  top: 7190px;
+  width: 787px;
+  height: 86px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 114%;
+  font-style: italic;
+  color: var(--blue-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* signup — Frame 2147228553 (391,7291 · 658×132) */
+.signup {
+  position: absolute;
+  left: 391px; top: 7291px;
+  width: 658px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.signup__name, .signup__email {
+  font-family: var(--display); font-size: 16px; font-weight: 500; line-height: 120%;
+  color: var(--ink); background: transparent; border: none; outline: none;
+}
+.signup__name { width: 658px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.signup__name::placeholder, .signup__email::placeholder { color: var(--ink); opacity: .9; }
+.signup__row {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 658px; padding: 14px 0; border-bottom: 1px solid var(--line);
+}
+.signup__email { flex: 1; }
+.signup__submit {
+  font-family: var(--display); font-size: 16px; font-weight: 500; line-height: 120%;
+  color: var(--link); background: none; border: none; cursor: pointer;
+}
+.signup__submit:hover { opacity: .7; }
+.signup__note { font-size: 12px; font-style: italic; font-weight: 500; line-height: 120%; color: var(--blue-200); }
+
+/* footer bar — Frame 2147225550 (70,7814 · 1300×17) */
+.footer-bar {
+  position: absolute;
+  left: 70px; top: 7814px;
+  width: 1300px; height: 17px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 14px; font-weight: 500; line-height: 120%; color: var(--blue-400); }
+.footer-links { display: flex; gap: 40px; }
+.footer-links a { font-size: 14px; font-weight: 500; line-height: 120%; color: var(--blue-400); }
+.footer-links a:hover { color: var(--ink); }
+
+/* featured in (210,7883 · 1020×76) */
+.featured {
+  position: absolute;
+  left: 210px; top: 7883px;
+  width: 1020px; height: 76px;
+  display: flex; align-items: center; justify-content: center; gap: 64px;
+  padding: 0 50px;
+}
+/* "Featured in" — App/Paragraph 1 (75×19) */
+.featured__label {
+  width: 86px; height: 19px;
+  font-size: 16px; font-weight: 500; line-height: 120%;
+  color: var(--ink);
+  display: flex; align-items: center;
+  text-align: center;
+}
+/* Frame 2147229194 — logo row (666×49, gap 16) */
+.featured__logos { display: flex; align-items: center; gap: 16px; width: 666px; height: 49px; }
+
+/* each logo = image layer (logo) + rectangle (gray, hard-light) */
+.flogo { position: relative; flex: none; }
+.flogo__img, .flogo__rect { position: absolute; mix-blend-mode: hard-light; }
+.flogo__img {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* usa today — 235×34.04 ; image 3324 208.51×34.04 ; Rectangle 34626899 #9EA4AC */
+.flogo--usatoday { width: 235px; height: 34.04px; }
+.flogo--usatoday .flogo__img  { width: 208.51px; height: 34.04px; left: 12.7px; top: 0; background-image: url('/10.png'); }
+.flogo--usatoday .flogo__rect { width: 235px;    height: 34.04px; left: 0;     top: 0; background: var(--blue-200); }
+
+/* forbes — 193×47 ; image 3325 120.64×31.48 ; Rectangle 34626900 #BEC2C7 */
+.flogo--forbes { width: 193px; height: 47px; }
+.flogo--forbes .flogo__img  { width: 120.64px; height: 31.48px; left: 44.29px; top: 7.78px; background-image: url('/11.png'); }
+.flogo--forbes .flogo__rect { width: 193px;    height: 47px;    left: 0;       top: 0;      background: var(--blue-100); }
+
+/* fast co — 206×49 ; image 3326 206×36.14 ; Rectangle 34626901 #BEC2C7 */
+.flogo--fastco { width: 206px; height: 49px; }
+.flogo--fastco .flogo__img  { width: 206px; height: 36.14px; left: 0; top: 6.43px; background-image: url('/12.png'); }
+.flogo--fastco .flogo__rect { width: 206px; height: 49px;    left: 0; top: 0;      background: var(--blue-100); }
+
+/* second "Featured in" instance, placed directly under the hero */
+.featured--hero { top: 880px; }
