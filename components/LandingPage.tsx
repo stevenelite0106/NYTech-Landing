@@ -40,10 +40,42 @@ const CAL_ROWS = [
   "ooooooooooooooooo",
 ];
 
+/* MailerLite embedded form — account 1766848, form 189837262958101971.
+   We keep the custom design and POST to MailerLite's subscribe endpoint. */
+const ML_ENDPOINT =
+  "https://assets.mailerlite.com/jsonp/1766848/forms/189837262958101971/subscribe";
+
 export default function LandingPage() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(2); // start on the middle card
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const n = CARD_DATA.length;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+
+    const data = new FormData();
+    data.append("fields[name]", name);
+    data.append("fields[email]", email);
+    data.append("ml-submit", "1");
+    data.append("anticsrf", "true");
+
+    setStatus("loading");
+    try {
+      // MailerLite's JSONP endpoint is cross-origin; no-cors lets the POST
+      // through (response is opaque, so we treat completion as success).
+      await fetch(ML_ENDPOINT, { method: "POST", body: data, mode: "no-cors" });
+      setStatus("success");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
+  };
 
   // Scale the fixed 1440px stage down to fit narrower viewports.
   useEffect(() => {
@@ -468,13 +500,14 @@ export default function LandingPage() {
         <p className="cta-sub">Built for the ones who were there first.</p>
         <p className="cta-sub-credit">$50/month</p>
 
-        <form className="signup" action="#" method="post" noValidate>
+        <form className="signup" onSubmit={handleSubmit}>
           <input
             className="signup__name"
             type="text"
             name="name"
             placeholder="Your name"
             aria-label="Your name"
+            autoComplete="given-name"
           />
           <div className="signup__row">
             <input
@@ -483,12 +516,24 @@ export default function LandingPage() {
               name="email"
               placeholder="Your email"
               aria-label="Your email"
+              autoComplete="email"
+              required
             />
-            <button className="signup__submit" type="submit">
-              SUBMIT
+            <button
+              className="signup__submit"
+              type="submit"
+              disabled={status === "loading"}
+            >
+              {status === "loading" ? "…" : "SUBMIT"}
             </button>
           </div>
-          <p className="signup__note">Limited spots available.</p>
+          <p className="signup__note">
+            {status === "success"
+              ? "You're on the list — welcome to the Founding 100."
+              : status === "error"
+                ? "Something went wrong. Please try again."
+                : "Limited spots available."}
+          </p>
         </form>
 
         {/* ===== FOOTER ===== */}
