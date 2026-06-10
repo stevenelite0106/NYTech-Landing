@@ -191,17 +191,41 @@ export default function LandingPage() {
         <div className="featured featured--hero">
           <span className="featured__label">Featured in</span>
           <ul className="featured__logos">
-            <li className="flogo flogo--usatoday" aria-label="USA Today">
-              <span className="flogo__img" />
-              <span className="flogo__rect" />
+            <li className="flogo flogo--usatoday">
+              <a
+                className="flogo__link"
+                href="https://www.usatoday.com/story/special/contributor-content/2025/10/21/this-founder-wants-to-make-personal-growth-as-measurable-as-your-step-count/86820546007/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="USA Today"
+              >
+                <span className="flogo__img" />
+                <span className="flogo__rect" />
+              </a>
             </li>
-            <li className="flogo flogo--forbes" aria-label="Forbes">
-              <span className="flogo__img" />
-              <span className="flogo__rect" />
+            <li className="flogo flogo--forbes">
+              <a
+                className="flogo__link"
+                href="https://www.forbes.com/councils/forbesbusinesscouncil/2025/12/04/how-ai-can-help-reshape-mental-wellness-from-reactive-to-proactive/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Forbes"
+              >
+                <span className="flogo__img" />
+                <span className="flogo__rect" />
+              </a>
             </li>
-            <li className="flogo flogo--fastco" aria-label="Fast Company">
-              <span className="flogo__img" />
-              <span className="flogo__rect" />
+            <li className="flogo flogo--fastco">
+              <a
+                className="flogo__link"
+                href="https://www.fastcompany.com/91463968/your-mind-needs-a-training-plan-heres-how-to-build-one"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Fast Company"
+              >
+                <span className="flogo__img" />
+                <span className="flogo__rect" />
+              </a>
             </li>
           </ul>
         </div>
@@ -407,7 +431,7 @@ export default function LandingPage() {
           <span className="cta-glow__halo" />
           <span className="cta-glow__mark" />
         </div>
-        <h2 className="cta-title">Join the Founding 100</h2>
+        <h2 className="cta-title">  Join the Founding 100</h2>
         <p className="cta-sub">Built for the ones who were there first.</p>
         <p className="cta-sub-credit">$50/month</p>
 

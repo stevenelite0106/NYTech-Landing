@@ -658,11 +658,15 @@ ul { list-style: none; }
   display: flex; align-items: center;
   text-align: center;
 }
-/* Frame 2147229194 — logo row (666×49, gap 16) */
-.featured__logos { display: flex; align-items: center; gap: 16px; width: 666px; height: 49px; }
+/* Frame 2147229194 — logo row (666×49, gap 16).
+   zoom shrinks the whole row (and its gap) to make the press logos smaller
+   while preserving each logo's internal proportions. */
+.featured__logos { display: flex; align-items: center; gap: 16px; width: 666px; height: 49px; zoom: 0.72; }
 
 /* each logo = image layer (logo) + rectangle (gray, hard-light) */
 .flogo { position: relative; flex: none; }
+/* clickable layer covering the whole logo */
+.flogo__link { display: block; position: absolute; inset: 0; cursor: pointer; }
 .flogo__img, .flogo__rect { position: absolute; mix-blend-mode: hard-light; }
 .flogo__img {
   background-position: center;
