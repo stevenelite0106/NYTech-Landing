@@ -2,42 +2,47 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* Five distinct training-stack groups — heading + caption shown under the
-   active (center) card. Verbatim from the original markup. */
+/* Five training-stack slides — image + title + description, ported from the
+   old project's PatternMappingSection. Each img maps to that component's
+   matching slide asset (copied to /pm1–5.png). */
 const CARD_DATA = [
   {
     heading: "Real-time pattern mapping",
     caption: "See what's driving your decisions before it does.",
+    img: "/pm4.png",
   },
   {
     heading: "Decision simulator",
     caption:
       "Run any choice through the lens of both your current self and your future self, and know exactly which one is making the call.",
+    img: "/pm1.png",
   },
   {
     heading: "Future-self identity training",
     caption:
       "Rehearse the behaviors, decisions, and language of who you're becoming, before you believe it's possible.",
+    img: "/pm5.png",
   },
   {
     heading: "90-day transformation protocol",
     caption:
       "Personalized to your pattern. Built to make new mental defaults inevitable.",
+    img: "/pm2.png",
   },
   {
     heading: "Rehearse future self responses",
     caption: "Practice thinking at your best before the moment demands it.",
+    img: "/pm3.png",
   },
 ];
 
-/* Calendar dot grid (17 cols × 6 rows). 'o' = filled cell. */
-const CAL_ROWS = [
-  "........o.o...o.o",
-  "........ooooooooo",
-  ".....o.oooooooooo",
-  "...o.oooooooooooo",
-  "o.oooooooooooooo",
-  "ooooooooooooooooo",
+/* Quote 1 — animated typewriter, ported from the old project's TextCarousel.
+   A fixed gray prefix, then these dark phrases typed/deleted in a loop. */
+const TEXT_SLIDES = [
+  "performing from confidence",
+  "moving before you feel ready",
+  "showing up for yourself",
+  "living in your full potential",
 ];
 
 /* MailerLite embedded form — account 1766848, form 189837262958101971.
@@ -55,6 +60,35 @@ export default function LandingPage() {
     "idle" | "loading" | "success" | "error"
   >("idle");
   const n = CARD_DATA.length;
+
+  // Quote 1 typewriter state (TextCarousel logic from the old project).
+  const [tcIndex, setTcIndex] = useState(0);
+  const [typed, setTyped] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentText = TEXT_SLIDES[tcIndex];
+    let id: number;
+    if (!deleting && typed.length < currentText.length) {
+      id = window.setTimeout(
+        () => setTyped(currentText.slice(0, typed.length + 1)),
+        42
+      );
+    } else if (!deleting && typed.length === currentText.length) {
+      id = window.setTimeout(() => setDeleting(true), 1400);
+    } else if (deleting && typed.length > 0) {
+      id = window.setTimeout(
+        () => setTyped(currentText.slice(0, typed.length - 1)),
+        22
+      );
+    } else {
+      id = window.setTimeout(() => {
+        setDeleting(false);
+        setTcIndex((i) => (i + 1) % TEXT_SLIDES.length);
+      }, 240);
+    }
+    return () => window.clearTimeout(id);
+  }, [tcIndex, typed, deleting]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,32 +130,20 @@ export default function LandingPage() {
     return () => window.removeEventListener("resize", fit);
   }, []);
 
-  // Auto-advance the slider every 4s.
+  // Auto-advance the slider every 3s (matches the old project's carousel).
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((c) => (c + 1) % n);
-    }, 4000);
+    }, 3000);
     return () => clearInterval(timer);
   }, [n]);
 
   const go = (dir: number) => setCurrent((c) => (c + dir + n) % n);
 
-  const cardClass = (i: number) => {
-    const rel = (i - current + n) % n;
-    if (rel === 0) return "tcard is-center";
-    if (rel === 1) return "tcard is-right";
-    if (rel === n - 1) return "tcard is-left";
-    return "tcard is-hidden";
-  };
-
-  // Clicking a side card rotates toward it.
-  const onCardClick = (i: number) => {
-    const rel = (i - current + n) % n;
-    if (rel === 1) go(1);
-    else if (rel === n - 1) go(-1);
-  };
-
-  const active = CARD_DATA[current] ?? CARD_DATA[0];
+  // Three visible slides: blurred prev | sharp center | blurred next.
+  const active = CARD_DATA[current];
+  const prev = CARD_DATA[(current - 1 + n) % n];
+  const next = CARD_DATA[(current + 1) % n];
 
   return (
     <div className="viewport">
@@ -255,200 +277,79 @@ export default function LandingPage() {
 
         {/* ===== QUOTE 1 ===== */}
         <p className="quote1">
-          <span
-            className="quote1__type"
-            data-text="This is your space to start performing from confidence"
-          >
-            This is your space to start performing from confidence
-          </span>
+          <span className="quote1__a">This is your space to start</span>{" "}
+          <span className="quote1__b type-caret">{typed}</span>
         </p>
 
         {/* ===== 90-DAY PROTOCOL ===== */}
-        <div className="protocol-img">
-          <div className="bubbles" aria-hidden="true">
-            <span className="bubble is-active" />
-            <span className="bubble" />
-            <span className="bubble" />
-            <span className="bubble" />
-          </div>
-        </div>
+        <div className="protocol-img" />
         <h3 className="protocol-cap">90 day transformation protocol</h3>
 
         {/* ===== MODULE 4 — training stack ===== */}
-        <h2 className="stack-h1">Future-self training ™</h2>
-        <h2 className="stack-h2">Your complete mental training stack</h2>
-        <p className="stack-p">
+        {/* Header re-animates (carousel-copy-enter) on each slide, like old. */}
+        <h2 key={`h1-${current}`} className="stack-h1 carousel-copy-enter">
+          Future-self training ™
+        </h2>
+        <h2 key={`h2-${current}`} className="stack-h2 carousel-copy-enter">
+          Your complete mental training stack
+        </h2>
+        <p key={`p-${current}`} className="stack-p carousel-copy-enter">
           Most self-improvement apps give you content. Space of mind gives you a
           relationship, with a concrete model of who you&apos;re becoming. An
           actual identity to train toward.
         </p>
 
-        {/* ===== CARD SLIDER ===== */}
+        {/* ===== CARD SLIDER — old project's PatternMappingSection:
+            blurred prev | sharp white center (panel-enter) | blurred next.
+            Side cards are the nav; content swaps each tick. ===== */}
         <div className="cards" id="cards">
           <button
-            className="cards-nav cards-prev"
+            className="tcard tcard--side"
             type="button"
-            aria-label="Previous card"
             onClick={() => go(-1)}
+            aria-label={`Show ${prev.heading}`}
           >
-            ‹
+            <div
+              className="tcard__media"
+              style={{ backgroundImage: `url('${prev.img}')` }}
+            />
+            <h3 className="tcard__title">{prev.heading}</h3>
           </button>
 
-          <div className="cards-track">
-            {/* GROUP 1 — Real-time pattern mapping */}
-            <div className={cardClass(0)} onClick={() => onCardClick(0)}>
-              <div
-                className="tcard__img"
-                style={{ backgroundImage: "url('/4.png')" }}
-              />
-              <div className="ov ov--pattern">
-                <div className="pc-head">
-                  <div className="pc-stat">
-                    <span className="trend trend--up">
-                      <i className="tri tri-up" />
-                      <span className="trend-label">Improving</span>
-                    </span>
-                    <span className="pc-name">Perfectionism</span>
-                  </div>
-                  <span className="pc-arrow">›</span>
-                  <span className="pc-score">+4.8</span>
-                </div>
-                <div className="calendar">
-                  <div className="cal-grad" />
-                  <div className="cal-dots" aria-hidden="true">
-                    {CAL_ROWS.flatMap((row, r) =>
-                      row.split("").map((ch, c) => (
-                        <span
-                          key={`${r}-${c}`}
-                          className={ch === "o" ? "on" : undefined}
-                        />
-                      ))
-                    )}
-                  </div>
-                  <div className="cal-week" aria-hidden="true">
-                    <span>S</span>
-                    <span>M</span>
-                    <span>T</span>
-                    <span>W</span>
-                    <span>T</span>
-                    <span>F</span>
-                    <span>S</span>
-                  </div>
-                </div>
-              </div>
+          <article
+            key={active.heading}
+            className="tcard tcard--center carousel-panel-enter"
+          >
+            <div
+              className="tcard__media"
+              style={{ backgroundImage: `url('${active.img}')` }}
+            />
+            <div className="tcard__cap">
+              <h3 className="tcard__title">{active.heading}</h3>
+              <p className="tcard__desc">{active.caption}</p>
             </div>
-
-            {/* GROUP 2 — Decision simulator */}
-            <div className={cardClass(1)} onClick={() => onCardClick(1)}>
-              <div
-                className="tcard__img"
-                style={{ backgroundImage: "url('/5.png')" }}
-              />
-              <div className="ov ov--decision">
-                <p className="ov-q">
-                  My boyfriend just got a new job in Atlanta. Should I go with
-                  him or stay here to focus on my own career?
-                </p>
-                <div className="ov-opts">
-                  <span className="ov-opt">
-                    <i className="ov-dot" />
-                    Asking your future self
-                  </span>
-                  <span className="ov-opt">
-                    <i className="ov-dot" />
-                    Asking your current self
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* GROUP 3 — Future-self identity training */}
-            <div className={cardClass(2)} onClick={() => onCardClick(2)}>
-              <div
-                className="tcard__img"
-                style={{ backgroundImage: "url('/6.png')" }}
-              />
-              <div className="ov ov--identity">
-                <span className="ov-label">New Pattern</span>
-                <h4 className="ov-big">
-                  I have the capacity to grow and learn
-                </h4>
-                <div className="ov-row">
-                  Why this pathway
-                  <i className="ov-chev" />
-                </div>
-                <div className="ov-row">
-                  Training focus
-                  <i className="ov-chev" />
-                </div>
-              </div>
-            </div>
-
-            {/* GROUP 4 — 90-day transformation protocol */}
-            <div className={cardClass(3)} onClick={() => onCardClick(3)}>
-              <div
-                className="tcard__img"
-                style={{ backgroundImage: "url('/7.png')" }}
-              />
-              <div className="ov ov--phases">
-                <div className="ov-phase">
-                  <div className="ov-phase-txt">
-                    <span className="ov-label">Phase 1</span>
-                    <span className="ov-phase-title">Pattern recognition</span>
-                  </div>
-                  <span className="ov-arrow2">›</span>
-                </div>
-                <div className="ov-phase">
-                  <div className="ov-phase-txt">
-                    <span className="ov-label">Phase 2</span>
-                    <span className="ov-phase-title">Pattern interruption</span>
-                  </div>
-                  <span className="ov-arrow2">›</span>
-                </div>
-              </div>
-            </div>
-
-            {/* GROUP 5 — Rehearse future self responses */}
-            <div className={cardClass(4)} onClick={() => onCardClick(4)}>
-              <div
-                className="tcard__img"
-                style={{ backgroundImage: "url('/8.png')" }}
-              />
-              <div className="ov ov--rehearse">
-                <span className="ov-pill">Prime</span>
-                <span className="ov-pill">Shift</span>
-                <span className="ov-pill">Deep Dive</span>
-              </div>
-            </div>
-          </div>
+          </article>
 
           <button
-            className="cards-nav cards-next"
+            className="tcard tcard--side"
             type="button"
-            aria-label="Next card"
             onClick={() => go(1)}
+            aria-label={`Show ${next.heading}`}
           >
-            ›
+            <div
+              className="tcard__media"
+              style={{ backgroundImage: `url('${next.img}')` }}
+            />
+            <h3 className="tcard__title">{next.heading}</h3>
           </button>
         </div>
 
-        <h3 className="feature-title">{active.heading}</h3>
-        <p className="feature-sub">{active.caption}</p>
-
         {/* ===== QUOTE 2 ===== */}
         <p className="quote2">
-          <span
-            className="quote2__type quote2__a"
-            data-text="Your future is being created by what you repeat today,"
-          >
-            Your future is being created by what you repeat today,
+          <span className="quote2__a">
+            The brain doesn&apos;t respond to who you want to be.
           </span>
-          <span
-            className="quote2__type quote2__b"
-            data-text="not what you intend to do tomorrow."
-          >
-            not what you intend to do tomorrow.
-          </span>
+          <span className="quote2__b">But who you train it to be.</span>
         </p>
 
         {/* ===== MODULE 5 — science ===== */}
@@ -501,7 +402,11 @@ export default function LandingPage() {
         </p>
 
         {/* ===== FINAL CTA ===== */}
-        <div className="cta-glow" aria-hidden="true" />
+        {/* Mark + soft radial glow — ported from the old project's beta section. */}
+        <div className="cta-glow" aria-hidden="true">
+          <span className="cta-glow__halo" />
+          <span className="cta-glow__mark" />
+        </div>
         <h2 className="cta-title">Join the Founding 100</h2>
         <p className="cta-sub">Built for the ones who were there first.</p>
         <p className="cta-sub-credit">$50/month</p>

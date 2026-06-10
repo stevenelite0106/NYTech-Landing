@@ -27,28 +27,32 @@
   --link:        #7197C7;
   --line:        #777F94;
 
-  /* ---- Fonts ---- */
-  --display: 'Neue Haas Grotesk Display Pro', 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  --body:    'Roboto', 'Inter', system-ui, sans-serif;
+  /* ---- Fonts (Manrope — matches the old project) ---- */
+  --display: 'Manrope', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --body:    'Manrope', 'Inter', system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: #ececec;
+  background: var(--offwhite);            /* warm cream backdrop, like the old project */
   font-family: var(--display);
+  letter-spacing: -0.02em;                /* old project's tight tracking */
   -webkit-font-smoothing: antialiased;
 }
+
+/* Selection highlight — verbatim from the old project. */
+::selection { background: #CBDFFF; color: #1F2835; }
 
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
 /* The fixed-size canvas — every child is absolutely positioned. */
-.viewport { overflow-x: hidden; background: #ececec; }
+.viewport { overflow-x: hidden; background: var(--offwhite); }
 .stage {
   position: relative;
   width: 1440px;
-  height: 7880px;
+  height: 6002px;
   margin: 0 auto;
   background: var(--offwhite);
   overflow: hidden;
@@ -137,7 +141,7 @@ ul { list-style: none; }
    ========================================================= */
 .tagline-h {
   position: absolute;
-  left: 70px; top: 1140px;
+  left: 70px; top: 1024px;
   width: 680px; height: 92px;
   font-size: 40px; font-weight: 500; line-height: 114%;
   color: var(--ink);
@@ -145,7 +149,7 @@ ul { list-style: none; }
 }
 .tagline-p {
   position: absolute;
-  left: 921px; top: 1140px;
+  left: 921px; top: 1024px;
   width: 449px; height: 92px;
   font-size: 20px; font-weight: 500; line-height: 114%;
   color: var(--blue-400);
@@ -158,7 +162,7 @@ ul { list-style: none; }
 /* glass panel — Frame 2147229193 (offset 485,0 → 555,1546 · 815×668) */
 .club-panel {
   position: absolute;
-  left: 555px; top: 1546px;
+  left: 555px; top: 1228px;
   width: 815px; height: 668px;
   background: url('/2.png') center / cover no-repeat;
     border-radius: 60px;
@@ -173,7 +177,7 @@ ul { list-style: none; }
 /* benefit stack — Frame 2147229206 (offset 88,23 → 158,1569 · 639×622, col gap 8) */
 .benefits {
   position: absolute;
-  left: 643px; top: 1569px;
+  left: 643px; top: 1251px;
   width: 639px; height: 622px;
   display: flex; flex-direction: column; gap: 8px;
 }
@@ -193,7 +197,7 @@ ul { list-style: none; }
 /* club intro — Frame 2147229132 (70,1876 col gap 40) */
 .club-title {
   position: absolute;
-  left: 70px; top: 1876px;
+  left: 70px; top: 1558px;
   width: 391px; height: 46px;
   font-size: 40px; font-weight: 500; line-height: 114%;
   color: var(--ink);
@@ -201,7 +205,7 @@ ul { list-style: none; }
 }
 .club-sub {
   position: absolute;
-  left: 70px; top: 1962px;
+  left: 70px; top: 1644px;
   width: 438px; height: 54px;
   font-size: 20px; font-weight: 500; line-height: 114%;
   color: var(--blue-400);
@@ -210,75 +214,57 @@ ul { list-style: none; }
 /* =========================================================
    QUOTE 1  (70,2646 · 1300×40)
    ========================================================= */
+/* Animated typewriter — ported from the old project's TextCarousel.
+   Gray prefix + dark phrase that types/deletes in a loop with a caret. */
 .quote1 {
   position: absolute;
-  left: 70px; top: 2646px;
+  left: 70px; top: 2056px;
   width: 1300px; height: 40px;
-  font-size: 40px; font-weight: 500; line-height: 100%;
-  color: rgba(44, 57, 74, 0.4);          /* untyped letters = gray */
+  font-size: 32px; font-weight: 500; line-height: 1.25;   /* old: text-[2rem] leading-tight */
+  letter-spacing: -0.05em;                                /* old: tracking-[-0.05em] */
   display: flex; align-items: center; justify-content: center;
-  text-align: center;
+  text-align: center; white-space: nowrap;                /* old: xl:whitespace-nowrap */
 }
-/* Typewriter overlay: a black copy of the text revealed left→right */
-.quote1__type {
-  position: relative;
+.quote1__a { color: rgba(44, 57, 74, 0.45); }   /* fixed prefix — de-emphasized */
+.quote1__b { color: var(--ink); }               /* animated phrase — dark */
+
+/* Blinking caret on the actively-typed text. */
+.type-caret {
   display: inline-block;
-  white-space: nowrap;
+  min-height: 1em;
+  border-right: 0.06em solid rgba(44, 57, 74, 0.6);
+  padding-right: 0.08em;
+  margin-left: 0.12em;
+  animation: type-caret-blink 900ms steps(1) infinite;
 }
-.quote1__type::before {
-  content: attr(data-text);
-  position: absolute;
-  left: 0; top: 0;
-  width: 0;                              /* animates 0 → 100% */
-  overflow: hidden;
-  white-space: nowrap;
-  color: #000;                           /* typed letters = black */
-  border-right: 2px solid #000;          /* caret */
-  animation:
-    quote1-typing 4s steps(54) infinite,
-    quote1-caret  0.6s steps(1) infinite;
-}
-@keyframes quote1-typing {
-  0%   { width: 0; }
-  65%  { width: 100%; }
-  85%  { width: 100%; }                  /* hold on full line */
-  100% { width: 0; }                     /* reset → letters fade back to gray */
-}
-@keyframes quote1-caret {
-  50% { border-color: transparent; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .quote1__type::before { width: 100%; border-right: none; animation: none; }
+@keyframes type-caret-blink {
+  0%, 45%   { border-color: rgba(44, 57, 74, 0.6); }
+  46%, 100% { border-color: transparent; }
 }
 
 /* =========================================================
    90-DAY PROTOCOL — Frame 2147228570  (70,3119 · 1300×707)
    ========================================================= */
+/* Rounded gradient image card — ported from the old project
+   (card-portrait.png over a soft #d8dee8 → #cfd7e3 gradient). */
 .protocol-img {
   position: absolute;
-  left: 70px; top: 3119px;
-  width: 1300px; height: 707px;
-  border-radius: 40px;
+  left: 70px; top: 2256px;
+  width: 1300px; height: 416px;          /* old: lg:h-[26rem] */
+  border-radius: 60px;                   /* old: lg:rounded-[3.75rem] */
   background:
-    linear-gradient(0deg, rgba(0,0,0,.38), rgba(0,0,0,0) 55%),
-    url('/3.png') center / cover no-repeat,
-    #F6F6F6;
+    url('/card-portrait.png') center / cover no-repeat,
+    linear-gradient(180deg, #D8DEE8 0%, #CFD7E3 100%);
   overflow: hidden;
 }
-.bubbles {
-  position: absolute;
-  top: 76px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 5px;
-}
-.bubble { width: 9.2px; height: 9.2px; border-radius: 50%; background: var(--blue-300); opacity: .2; }
-.bubble.is-active { opacity: 1; }
-/* caption "90 day transformation protocol" — 363×32, centered -8.5x, top 3950 */
+/* caption "90 day transformation protocol" — old: mt-6 (24px) below card */
 .protocol-cap {
   position: absolute;
-  left: 520px; top: 3950px;
-  width: 383px; height: 32px;
-  font-size: 25px; font-weight: 500; line-height: 114%;
-  color: var(--ink);
+  left: 70px; top: 2696px;               /* card bottom 3535 + 24px gap */
+  width: 1300px;
+  font-size: 21.6px; font-weight: 500; line-height: 1.4;   /* old: text-[1.35rem] */
+  letter-spacing: -0.03em;               /* old: tracking-[-0.03em] */
+  color: var(--blue-400);                /* old: text-[#56616e] */
   display: flex; align-items: center; justify-content: center;
   text-align: center;
 }
@@ -289,7 +275,7 @@ ul { list-style: none; }
 /* header — Frame 2147229139 (70,4338 · 1300×94) */
 .stack-h1 {
   position: absolute;
-  left: 70px; top: 4338px;
+  left: 70px; top: 2840px;
   width: 593px; height: 46px;
   font-size: 40px; font-weight: 500; line-height: 114%;
   color: var(--ink);
@@ -297,7 +283,7 @@ ul { list-style: none; }
 }
 .stack-h2 {
   position: absolute;
-  left: 70px; top: 4386px;
+  left: 70px; top: 2888px;
   width: 593px; height: 46px;
   font-size: 34px; font-weight: 500; line-height: 114%;
   color: var(--ink);
@@ -306,7 +292,7 @@ ul { list-style: none; }
 }
 .stack-p {
   position: absolute;
-  left: 851px; top: 4363px;
+  left: 851px; top: 2865px;
   width: 518.56px; height: 69px;
   font-size: 20px; font-weight: 500; line-height: 114%;
   color: var(--ink);
@@ -314,87 +300,70 @@ ul { list-style: none; }
 }
 
 /* =========================================================
-   CARD SLIDER — replaces the 3 static training-stack cards
-   3 visible at a time: center sharp, sides glow + alpha.
+   CARD SLIDER — old project's PatternMappingSection:
+   static 3-column grid (blurred prev | white center | blurred next).
+   Content swaps each tick; center + header re-animate on change.
    ========================================================= */
 .cards {
   position: absolute;
-  left: 0; top: 4552px;
-  width: 1440px; height: 550px;
-}
-.cards-track {
-  position: absolute; inset: 0;
-  perspective: 1600px;
+  left: 70px; top: 3054px;
+  width: 1300px;
+  display: flex; justify-content: center; align-items: flex-start; gap: 20px;
 }
 
-/* Frame 2147229192 — 500×550, radius 75. Card group (image + pattern card) */
-.tcard {
-  position: absolute;
-  left: 50%; top: 0;
-  width: 500px; height: 550px;
-  margin-left: -250px;
-  border-radius: 75px;
-  background: rgba(255, 254, 249, 0.2);
-  box-shadow: 1px 0 10px rgba(147,129,192,.1), 4px 0 53.856px #F0ECFA;
-  overflow: hidden;
-  transition: transform .55s cubic-bezier(.4,0,.2,1), opacity .55s, filter .55s;
-  transform: scale(.7);
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity, filter;
+.tcard__media {
+  width: 100%;
+  aspect-ratio: 608 / 658;        /* source image ratio → image fits uncropped */
+  border-radius: 32px;
+  background: #ffffff center / cover no-repeat;
 }
-/* Frame 2147229190 — image 524×720 at (-10,-63), mirrored (matrix(-1,0,0,1,0,0)) */
-.tcard__img {
-  position: absolute;
-  left: -10px; top: -63px;
-  width: 524px; height: 720px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #F0F2FA;     /* linear-gradient(0deg,#F0F2FA,#F0F2FA) fallback */
-  transform: scaleX(-1);         /* matrix(-1,0,0,1,0,0) */
+.tcard__title {
+  font-size: 30px; font-weight: 500; line-height: 1.1;
+  letter-spacing: -0.05em; color: var(--ink);
 }
-/* center = sharp, full opacity */
-.tcard.is-center {
-  transform: translateX(0) scale(1);
-  opacity: 1;
-  filter: none;
-  z-index: 3;
-  pointer-events: auto;
+.tcard__desc {
+  margin: 12px auto 0; max-width: 420px;
+  font-size: 16px; font-weight: 500; line-height: 1.5; color: #707987;
 }
-/* sides = glow (blur) + alpha */
-.tcard.is-left {
-  transform: translateX(-360px) scale(.82);
-  opacity: .45;
-  filter: blur(5px);
-  z-index: 2;
-}
-.tcard.is-right {
-  transform: translateX(360px) scale(.82);
-  opacity: .45;
-  filter: blur(5px);
-  z-index: 2;
-}
-/* everything else hidden */
-.tcard.is-hidden { opacity: 0; transform: scale(.7); z-index: 1; }
 
-/* nav arrows */
-.cards-nav {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  z-index: 6;
-  width: 56px; height: 56px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 30px; line-height: 1; color: var(--ink);
-  background: rgba(255,255,255,.7);
-  border: 1px solid rgba(44,57,74,.12);
-  border-radius: 50%;
-  cursor: pointer;
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  transition: background .2s, transform .2s;
+/* center = sharp white panel with title + description (old: 1fr column) */
+.tcard--center {
+  width: 463px; flex: none;
+  background: #fff; padding: 16px;
+  border-radius: 32px;
+  box-shadow: 0 30px 70px rgba(107,120,152,.16);
+  text-align: center;
 }
-.cards-nav:hover { background: #fff; }
-.cards-prev { left: 120px; }
-.cards-next { right: 120px; }
+.tcard--center .tcard__cap { padding: 20px 12px 8px; }
+
+/* sides = blurred image + de-emphasized title; the cards are the nav */
+.tcard--side {
+  width: 398px; flex: none;
+  padding-top: 20px;
+  background: none; border: none; cursor: pointer;
+  text-align: center; font: inherit;
+}
+.tcard--side .tcard__media { position: relative; filter: blur(10px) saturate(.9); }
+.tcard--side .tcard__media::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: inherit; background: rgba(255,255,255,.18);
+}
+.tcard--side .tcard__title {
+  margin-top: 16px;
+  font-size: 18px; letter-spacing: -0.03em; color: #C8C7C2;
+}
+
+/* enter animations — verbatim from the old project's globals.css */
+.carousel-copy-enter  { animation: carousel-copy-enter  420ms cubic-bezier(0.22,1,0.36,1); }
+.carousel-panel-enter { animation: carousel-panel-enter 500ms cubic-bezier(0.22,1,0.36,1); }
+@keyframes carousel-copy-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes carousel-panel-enter {
+  from { opacity: 0; transform: translateX(28px) scale(0.985); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
 
 /* overlay base — Frame 2147229133 glass card, centered inside each card.
    Shared by all five groups; each group adds its own inner content. */
@@ -501,7 +470,7 @@ ul { list-style: none; }
 /* feature caption */
 .feature-title {
   position: absolute;
-  left: 471px; top: 5142px;
+  left: 471px; top: 3644px;
   width: 500px; height: 32px;
   font-size: 28px; font-weight: 500; line-height: 114%;
   color: var(--ink);
@@ -510,7 +479,7 @@ ul { list-style: none; }
 }
 .feature-sub {
   position: absolute;
-  left: 471px; top: 5190px;
+  left: 471px; top: 3692px;
   width: 500px; height: 38px;
   font-size: 16px; font-weight: 500; line-height: 120%;
   color: var(--blue-300);
@@ -520,60 +489,30 @@ ul { list-style: none; }
 /* =========================================================
    QUOTE 2 — Frame 2147229193  (278.5,5623 · 883×97)
    ========================================================= */
+/* Two-line, two-tone static quote — ported from the old project
+   ("The brain doesn't respond…" gray setup / dark payoff). */
 .quote2 {
   position: absolute;
-  left: 278.5px; top: 5623px;
+  left: 278.5px; top: 3860px;
   width: 883px; height: 97px;
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
   text-align: center;
 }
-/* Typewriter (same technique as quote1) across two lines, typed in sequence */
-.quote2__type {
-  position: relative;
-  display: inline-block;
+.quote2__a,
+.quote2__b {
+  font-size: 35px; font-weight: 500; line-height: 1.1;
+  letter-spacing: -0.04em;             /* old: tracking-[-0.04em] */
   white-space: nowrap;
-  font-size: 40px; font-weight: 500; line-height: 114%;
-  color: rgba(44, 57, 74, 0.4);          /* untyped letters = gray */
 }
-.quote2__type::before {
-  content: attr(data-text);
-  position: absolute; left: 0; top: 0;
-  width: 0;                              /* animates 0 → 100% */
-  overflow: hidden;
-  white-space: nowrap;
-  color: #000;                           /* typed letters = black */
-  border-right: 2px solid #000;          /* caret */
-}
-.quote2__a::before {
-  animation: quote2-a 6s steps(54) infinite, quote2-caret 0.6s steps(1) infinite;
-}
-.quote2__b::before {
-  animation: quote2-b 6s steps(35) infinite, quote2-caret 0.6s steps(1) infinite;
-}
-/* line A types first quarter, holds; line B waits, then types */
-@keyframes quote2-a {
-  0%   { width: 0; }
-  25%  { width: 100%; }
-  90%  { width: 100%; }
-  100% { width: 0; }
-}
-@keyframes quote2-b {
-  0%, 35% { width: 0; }
-  60%     { width: 100%; }
-  90%     { width: 100%; }
-  100%    { width: 0; }
-}
-@keyframes quote2-caret { 50% { border-color: transparent; } }
-@media (prefers-reduced-motion: reduce) {
-  .quote2__type::before { width: 100%; border-right: none; animation: none; }
-}
+.quote2__a { color: #BFBEBA; }          /* setup line — de-emphasized */
+.quote2__b { color: var(--ink); }       /* payoff line — dark */
 
 /* =========================================================
    MODULE 5 — science  (70,5977 · 1300×642)
    ========================================================= */
 .science {
   position: absolute;
-  left: 70px; top: 5977px;
+  left: 70px; top: 4087px;
   width: 1300px; height: 642px;
   border-radius: 60px;
   background:
@@ -596,7 +535,7 @@ ul { list-style: none; }
    TESTIMONIALS  (top 6731)
    ========================================================= */
 .tm {
-  position: absolute; top: 6731px;
+  position: absolute; top: 4841px;
   font-size: 20px; font-weight: 500; line-height: 114%;
   color: var(--ink);
 }
@@ -608,17 +547,32 @@ ul { list-style: none; }
 /* =========================================================
    FINAL CTA — Frame 2147229144  (top 7047)
    ========================================================= */
+/* Mark + soft radial glow — ported from the old project's beta section
+   (som-mark-dark.svg over a blurred blue radial gradient). */
 .cta-glow {
   position: absolute;
-  left: 631px; top: 7403px;
-  width: 289px; height: 288px;
-  background: url('/purple_mark.svg') center / contain no-repeat;
-  opacity: 1;        /* no fade */
-  filter: none;      /* no glow/blur — sharp mark */
+  left: 50%; top: 5540px; transform: translateX(-50%);
+  width: 220px; height: 200px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cta-glow__halo {
+  position: absolute;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(174,194,255,0.35) 0%,
+    rgba(174,194,255,0.12) 35%,
+    rgba(174,194,255,0) 72%);
+  filter: blur(40px);
+}
+.cta-glow__mark {
+  position: relative;
+  width: 144px; height: 153px;     /* old: w-36, 160×170 aspect */
+  background: url('/som-mark-dark.svg') center / contain no-repeat;
 }
 .cta-title {
   position: absolute;
-  left: 441px; top: 7047px;
+  left: 441px; top: 5158px;
   width: 589px; height: 60px;
   font-size: 55px; font-weight: 500; line-height: 100%;
   color: var(--ink);
@@ -626,7 +580,7 @@ ul { list-style: none; }
 }
 .cta-sub {
   position: absolute;
-  left: 326.5px; top: 7136px;
+  left: 326.5px; top: 5247px;
   width: 787px; height: 86px;
   font-size: 28px; font-weight: 500; line-height: 114%;
   color: var(--blue-400);
@@ -637,7 +591,7 @@ ul { list-style: none; }
 .cta-sub-credit {
   position: absolute;
   left: 326.5px;
-  top: 7190px;
+  top: 5301px;
   width: 787px;
   height: 86px;
   font-size: 15px;
@@ -654,7 +608,7 @@ ul { list-style: none; }
 /* signup — Frame 2147228553 (391,7291 · 658×132) */
 .signup {
   position: absolute;
-  left: 391px; top: 7291px;
+  left: 391px; top: 5402px;
   width: 658px;
   display: flex; flex-direction: column; gap: 8px;
 }
@@ -679,7 +633,7 @@ ul { list-style: none; }
 /* footer bar — Frame 2147225550 (70,7814 · 1300×17) */
 .footer-bar {
   position: absolute;
-  left: 70px; top: 7814px;
+  left: 70px; top: 5925px;
   width: 1300px; height: 17px;
   display: flex; justify-content: space-between; align-items: center;
 }
@@ -691,7 +645,7 @@ ul { list-style: none; }
 /* featured in (210,7883 · 1020×76) */
 .featured {
   position: absolute;
-  left: 210px; top: 7883px;
+  left: 210px; top: 7492px;
   width: 1020px; height: 76px;
   display: flex; align-items: center; justify-content: center; gap: 64px;
   padding: 0 50px;
@@ -732,4 +686,33 @@ ul { list-style: none; }
 .flogo--fastco .flogo__rect { width: 206px; height: 49px;    left: 0; top: 0;      background: var(--blue-100); }
 
 /* second "Featured in" instance, placed directly under the hero */
-.featured--hero { top: 880px; }
+.featured--hero { top: 836px; }
+
+/* =========================================================
+   OLD-PROJECT TYPOGRAPHY ALIGNMENT
+   The old project uses a tight, large-display style: tracking
+   -0.04em…-0.06em and tight leading on headings (vs the new
+   project's 114% leading). Applied last so it wins the cascade
+   without touching any element's position/size.
+   ========================================================= */
+.hero__title,
+.tagline-h,
+.club-title,
+.stack-h1,
+.stack-h2,
+.feature-title,
+.science__title,
+.quote2__type {
+  letter-spacing: -0.04em;   /* old: tracking-[-0.04em] */
+  line-height: 1.04;         /* old: leading-[1.02]…tight */
+}
+/* Hero-scale headlines — tightest, like the old "Join the beta" h2. */
+.cta-title {
+  letter-spacing: -0.06em;   /* old: tracking-[-0.06em] */
+  line-height: 0.96;         /* old: leading-[0.94] */
+}
+.cta-sub,
+.club-sub,
+.tagline-p {
+  letter-spacing: -0.04em;   /* old: tracking on sub-copy */
+}
