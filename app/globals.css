@@ -572,11 +572,12 @@ ul { list-style: none; }
 }
 .cta-title {
   position: absolute;
-  left: 441px; top: 5158px;
+  left: 50%; top: 5158px; transform: translateX(-50%);
   width: 589px; height: 60px;
   font-size: 55px; font-weight: 500; line-height: 100%;
   color: var(--ink);
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
 }
 .cta-sub {
   position: absolute;
