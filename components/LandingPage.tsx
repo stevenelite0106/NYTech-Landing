@@ -45,6 +45,9 @@ const CAL_ROWS = [
 const ML_ENDPOINT =
   "https://assets.mailerlite.com/jsonp/1766848/forms/189837262958101971/subscribe";
 
+/* Stripe Payment Link — users are sent here after signup to complete payment. */
+const STRIPE_URL = "https://buy.stripe.com/eVqbJ1a1p21naJ70XJcwg0d";
+
 export default function LandingPage() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(2); // start on the middle card
@@ -71,7 +74,10 @@ export default function LandingPage() {
       // through (response is opaque, so we treat completion as success).
       await fetch(ML_ENDPOINT, { method: "POST", body: data, mode: "no-cors" });
       setStatus("success");
-      form.reset();
+      // Send the subscriber to Stripe to complete payment, prefilling email.
+      window.location.href = `${STRIPE_URL}?prefilled_email=${encodeURIComponent(
+        email
+      )}`;
     } catch {
       setStatus("error");
     }
@@ -528,11 +534,13 @@ export default function LandingPage() {
             </button>
           </div>
           <p className="signup__note">
-            {status === "success"
-              ? "You're on the list — welcome to the Founding 100."
-              : status === "error"
-                ? "Something went wrong. Please try again."
-                : "Limited spots available."}
+            {status === "loading"
+              ? "Securing your spot…"
+              : status === "success"
+                ? "Redirecting you to checkout…"
+                : status === "error"
+                  ? "Something went wrong. Please try again."
+                  : "Limited spots available."}
           </p>
         </form>
 
