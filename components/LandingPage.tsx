@@ -123,8 +123,11 @@ export default function LandingPage() {
     const stage = stageRef.current;
     if (!stage) return;
     const fit = () => {
-      if (window.innerWidth >= 1024) {
-        stage.style.zoom = String(Math.min(1, window.innerWidth / 1440));
+      // clientWidth excludes the vertical scrollbar; innerWidth includes it,
+      // which would over-scale the stage and clip its right edge.
+      const w = document.documentElement.clientWidth;
+      if (w >= 1024) {
+        stage.style.zoom = String(Math.min(1, w / 1440));
       } else {
         stage.style.zoom = "";
       }
