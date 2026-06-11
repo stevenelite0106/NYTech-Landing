@@ -117,13 +117,17 @@ export default function LandingPage() {
     }
   };
 
-  // Scale the fixed 1440px stage down to fit narrower viewports.
+  // Scale the fixed 1440px stage to fit large screens. Below 1024px we clear
+  // the zoom and let the CSS mobile reflow (single column) take over instead.
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
     const fit = () => {
-      const s = Math.min(1, window.innerWidth / 1440);
-      stage.style.zoom = String(s);
+      if (window.innerWidth >= 1024) {
+        stage.style.zoom = String(Math.min(1, window.innerWidth / 1440));
+      } else {
+        stage.style.zoom = "";
+      }
     };
     window.addEventListener("resize", fit);
     fit();

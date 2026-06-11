@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 
@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "Space of Mind — Join the Founding 100",
   description:
     "Space of Mind is a science-backed daily protocol that builds the mental patterns your next level demands, one rep at a time. Join as a founding member before we open to the public.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -27,7 +32,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
 
         {/* MailerLite Universal — analytics & popups (account 1766848) */}

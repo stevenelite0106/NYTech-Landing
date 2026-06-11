@@ -500,7 +500,7 @@ ul { list-style: none; }
 }
 .quote2__a,
 .quote2__b {
-  font-size: 35px; font-weight: 500; line-height: 1.1;
+  font-size: 35px; font-weight: 400; line-height: 1.25;   /* original: regular weight, leading-tight */
   letter-spacing: -0.04em;             /* old: tracking-[-0.04em] */
   white-space: nowrap;
 }
@@ -528,8 +528,8 @@ ul { list-style: none; }
   width: 1168px; height: 76px;
   display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;
 }
-.science__title { width: 414px; font-size: 40px; font-weight: 500; line-height: 114%; color: var(--pure-white); }
-.science__text  { width: 496.85px; font-size: 16px; font-weight: 500; line-height: 120%; color: var(--pure-white); }
+.science__title { width: 414px; font-size: 40px; font-weight: 400; line-height: 114%; color: var(--pure-white); }
+.science__text  { width: 496.85px; font-size: 16px; font-weight: 400; line-height: 120%; color: rgba(255, 255, 255, 0.84); }
 
 /* =========================================================
    TESTIMONIALS  (top 6731)
@@ -664,16 +664,23 @@ ul { list-style: none; }
    while preserving each logo's internal proportions. */
 .featured__logos { display: flex; align-items: center; gap: 16px; width: 666px; height: 49px; zoom: 0.72; }
 
-/* each logo = image layer (logo) + rectangle (gray, hard-light) */
+/* each logo = a single image layer, muted to press-grey (like the main site:
+   grayscale + reduced opacity, brightening on hover). */
 .flogo { position: relative; flex: none; }
 /* clickable layer covering the whole logo */
 .flogo__link { display: block; position: absolute; inset: 0; cursor: pointer; }
-.flogo__img, .flogo__rect { position: absolute; mix-blend-mode: hard-light; }
 .flogo__img {
+  position: absolute;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
 }
+.flogo:hover .flogo__img { opacity: 1; }
+/* the old grey rectangle overlay — removed (was a Figma hard-light artifact) */
+.flogo__rect { display: none; }
 
 /* usa today — 235×34.04 ; image 3324 208.51×34.04 ; Rectangle 34626899 #9EA4AC */
 .flogo--usatoday { width: 235px; height: 34.04px; }
@@ -720,4 +727,203 @@ ul { list-style: none; }
 .club-sub,
 .tagline-p {
   letter-spacing: -0.04em;   /* old: tracking on sub-copy */
+}
+
+/* =========================================================
+   RESPONSIVE — below 1024px the fixed 1440 stage reflows into
+   a single mobile-first column (mirrors spaceofmind.com: flow
+   layout on mobile/tablet, pixel-positioned layout only on
+   large screens). The JS that zoom-scales the stage is
+   disabled below 1024px so this layout can take over.
+
+   Trick: every section is a direct child of .stage, so we make
+   .stage a flex column and use `order` to re-sequence the
+   desktop two-column sections into the correct vertical order.
+   ========================================================= */
+@media (max-width: 1023px) {
+  .viewport { overflow-x: hidden; }
+
+  .stage {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    padding: 16px 16px 48px;
+    gap: 44px;
+  }
+
+  /* clear every absolute coordinate / transform on the top-level blocks */
+  .stage > * {
+    position: static;
+    left: auto; right: auto; top: auto; bottom: auto;
+    transform: none;
+    width: 100%;
+    max-width: 540px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ----- stacking order (follows the desktop top-to-bottom layout) ----- */
+  .hero           { order: 1; }
+  .featured--hero { order: 2; }
+  .tagline-h      { order: 3; }
+  .tagline-p      { order: 4; }
+  .club-title     { order: 5; }
+  .club-sub       { order: 6; }
+  .benefits       { order: 7; }
+  .quote1         { order: 8; }
+  .protocol-img   { order: 9; }
+  .protocol-cap   { order: 10; }
+  .stack-h1       { order: 11; }
+  .stack-h2       { order: 12; }
+  .stack-p        { order: 13; }
+  .cards          { order: 14; }
+  .quote2         { order: 15; }
+  .science        { order: 16; }
+  .tm--1          { order: 17; }
+  .tm--2          { order: 18; }
+  .tm--3          { order: 19; }
+  .cta-title      { order: 20; }
+  .cta-sub        { order: 21; }
+  .cta-sub-credit { order: 22; }
+  .signup         { order: 23; }
+  .cta-glow       { order: 24; }
+  .footer-bar     { order: 25; }
+
+  /* tighten heading/sub pairs (the 44px column gap is too airy for these) */
+  .tagline-p, .club-sub, .stack-h2, .stack-p,
+  .protocol-cap, .cta-sub, .cta-sub-credit { margin-top: -28px; }
+
+  /* decorative desktop-only layers */
+  .club-panel { display: none; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 600px;
+    max-width: none;
+    border-radius: 32px;
+    padding: 84px 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .hero .hero__logo { position: absolute; right: 20px; top: 20px; width: 46px; height: 49px; }
+  .hero .hero__title {
+    position: static;
+    left: auto; top: auto;
+    order: 0;
+    width: auto; height: auto;
+    margin: 18px 0 10px;
+    font-size: 2.1rem; line-height: 1.04;
+    text-align: center; justify-content: center;
+  }
+  /* hero stats → stacked glass cards with white text (like the main site) */
+  .hero .stat {
+    position: static;
+    left: auto; top: auto;
+    width: auto;
+    flex-direction: column; align-items: flex-start; gap: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 13px 18px;
+    color: #fff;
+  }
+  .hero .stat--left { order: 1; }
+  .hero .stat--top  { order: 2; }
+  .hero .stat--right:not(.stat--top) { order: 3; }
+  .hero .stat__line { display: none; }
+  .hero .stat__body { align-items: flex-start; }
+  .hero .stat__value { font-size: 1.55rem; color: #fff; }
+  .hero .stat__label { font-size: 0.7rem; text-align: left; color: rgba(255, 255, 255, 0.85); }
+  .hero .ic--dot  { border-color: #fff; }
+  .hero .ic--mark { background: #fff; }
+
+  /* ===== FEATURED LOGOS ===== */
+  .featured--hero {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding: 0;
+  }
+  .featured__logos {
+    flex-wrap: wrap; justify-content: center; align-items: center;
+    width: auto; height: auto; gap: 18px 26px; zoom: 1;
+  }
+  .flogo { transform: scale(0.72); }
+
+  /* ===== TYPOGRAPHY ===== */
+  .tagline-h, .club-title, .stack-h1 { font-size: 1.85rem; line-height: 1.08; }
+  .stack-h2 { font-size: 1.5rem; }
+  .tagline-p, .club-sub, .stack-p { font-size: 1.05rem; line-height: 1.45; }
+
+  /* ===== BENEFITS ===== */
+  .benefits { display: flex; flex-direction: column; gap: 12px; }
+  .benefit { width: 100%; height: auto; }
+
+  /* ===== QUOTES ===== */
+  .quote1 {
+    flex-wrap: wrap; white-space: normal; height: auto;
+    font-size: 1.6rem; line-height: 1.25;
+  }
+  .quote1 .quote1__a, .quote1 .quote1__b { white-space: normal; }
+  .quote2 { height: auto; }
+  .quote2 .quote2__a, .quote2 .quote2__b { white-space: normal; font-size: 1.7rem; }
+
+  /* ===== 90-DAY PROTOCOL ===== */
+  .protocol-img { max-width: none; height: 240px; border-radius: 28px; }
+  .protocol-cap { font-size: 1.1rem; }
+
+  /* ===== CARD SLIDER — center card only on mobile (autoplay cycles it) ===== */
+  .cards { display: flex; justify-content: center; height: auto; gap: 0; }
+  .tcard--side { display: none; }
+  .tcard--center { width: 100%; max-width: 380px; margin: 0 auto; }
+
+  /* ===== SCIENCE ===== */
+  .science {
+    max-width: none; height: auto; min-height: 440px;
+    border-radius: 28px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .science .science__row {
+    position: static; left: auto; top: auto;
+    width: 100%; height: auto;
+    flex-direction: column; align-items: flex-start; gap: 12px;
+    padding: 26px 22px;
+  }
+  .science .science__title { width: auto; font-size: 1.8rem; }
+  .science .science__text  { width: auto; font-size: 1rem; }
+
+  /* ===== TESTIMONIALS ===== */
+  .tm { font-size: 1.05rem; line-height: 1.3; }
+
+  /* ===== FINAL CTA ===== */
+  .cta-title { font-size: 2.6rem; line-height: 0.98; }
+  .cta-sub { font-size: 1.4rem; line-height: 1.12; }
+  .cta-sub-credit { font-size: 1rem; }
+  .cta-glow { position: relative; width: 200px; max-width: 200px; height: 180px; margin: 8px auto 0; }
+
+  /* ===== SIGNUP FORM ===== */
+  .signup { max-width: 420px; }
+  .signup .signup__name, .signup .signup__row { width: 100%; }
+
+  /* ===== FOOTER ===== */
+  .footer-bar {
+    flex-direction: column; gap: 14px; height: auto;
+    align-items: center; text-align: center;
+  }
+  .footer-links { gap: 28px; }
+}
+
+/* Small phones — a touch tighter. */
+@media (max-width: 480px) {
+  .hero .hero__title { font-size: 1.85rem; }
+  .tagline-h, .club-title, .stack-h1 { font-size: 1.6rem; }
+  .quote1 { font-size: 1.35rem; }
+  .quote2 .quote2__a, .quote2 .quote2__b { font-size: 1.45rem; }
+  .cta-title { font-size: 2.1rem; }
+  .cta-sub { font-size: 1.2rem; }
 }
