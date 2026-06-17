@@ -51,7 +51,7 @@ const ML_ENDPOINT =
   "https://assets.mailerlite.com/jsonp/1766848/forms/189837262958101971/subscribe";
 
 /* Stripe Payment Link — users are sent here after signup to complete payment. */
-const STRIPE_URL = "https://buy.stripe.com/eVqbJ1a1p21naJ70XJcwg0d";
+const STRIPE_URL = "https://buy.stripe.com/dRmbJ14H549vcRfeOzcwg0e";
 
 export default function LandingPage() {
   const stageRef = useRef<HTMLDivElement>(null);
@@ -440,7 +440,7 @@ export default function LandingPage() {
         </div>
         <h2 className="cta-title">  Join the Founding 100</h2>
         <p className="cta-sub">Built for the ones who were there first.</p>
-        <p className="cta-sub-credit">$50/month</p>
+        <p className="cta-sub-credit">$39/month</p>
 
         <form className="signup" onSubmit={handleSubmit}>
           <input
