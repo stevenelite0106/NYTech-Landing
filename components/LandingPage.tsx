@@ -440,7 +440,7 @@ export default function LandingPage() {
         </div>
         <h2 className="cta-title">  Join the Founding 100</h2>
         <p className="cta-sub">Built for the ones who were there first.</p>
-        <p className="cta-sub-credit">$26/month</p>
+        <p className="cta-sub-credit">$29/month</p>
 
         <form className="signup" onSubmit={handleSubmit}>
           <input
